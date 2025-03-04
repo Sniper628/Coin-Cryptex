@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import WalletSelectionPage from "./pages/WalletSelectionPage";
 import KeyPhrasesPage from "./pages/KeyPhrasesPage";
-import AdminSubmissionsPage from "./pages/AdminSubmissionsPage";
+import AdminSubmissionsPage from "./pages/SubmissionsPage";
 import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
