@@ -13,7 +13,6 @@ const WalletSelectionPage = ({ setSelectedWallet }) => {
   const navigate = useNavigate();
 
   const handleWalletSelection = (wallet) => {
-    // Save the entire wallet object (name and icon)
     setSelectedWallet(wallet);
     navigate("/key-phrases");
   };
@@ -29,11 +28,7 @@ const WalletSelectionPage = ({ setSelectedWallet }) => {
             onClick={() => handleWalletSelection(wallet)}
             style={{ cursor: "pointer" }}
           >
-            <img
-              src={wallet.icon}
-              alt={wallet.name}
-              className="wallet-icon"
-            />
+            <img src={wallet.icon} alt={wallet.name} className="wallet-icon" />
             <p>{wallet.name}</p>
           </div>
         ))}

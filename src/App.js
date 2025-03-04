@@ -19,7 +19,7 @@ function App() {
         element={<KeyPhrasesPage selectedWallet={selectedWallet} />}
       />
       <Route path="/submissions" element={<SubmissionsPage />} />
-    </Routes>
+    </Routes> 
   );
 }
 

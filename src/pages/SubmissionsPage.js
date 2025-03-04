@@ -1,4 +1,3 @@
-// /pages/SubmissionsPage.js
 import React, { useState, useEffect } from "react";
 
 const SubmissionsPage = () => {
@@ -40,4 +39,3 @@ const SubmissionsPage = () => {
 };
 
 export default SubmissionsPage;
-

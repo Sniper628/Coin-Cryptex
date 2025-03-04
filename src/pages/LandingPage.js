@@ -2,7 +2,6 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
 
-
 const LandingPage = () => {
   const navigate = useNavigate();
 
@@ -11,12 +10,10 @@ const LandingPage = () => {
   };
 
   return (
-    <>
-  
     <div className="landing-page-container">
-    <div className="logo-container">
-    <img src={logo} alt="Logo" className="logo" />
-  </div>
+      <div className="logo-container">
+        <img src={logo} alt="Logo" className="logo" />
+      </div>
       <h1>COIN CRYPTEX</h1>
       <p>The future of crypto in your pocket</p>
       <p>Trade, send, and store CRYPTO & NFTs</p>
@@ -49,17 +46,10 @@ const LandingPage = () => {
         </button>
         .
       </p>
-
-      <button onClick={handleConnectWallet}>
-        Connect existing wallet
-      </button>
-
+      <button onClick={handleConnectWallet}>Connect existing wallet</button>
       <button>I already have a cryptex account</button>
     </div>
-    </>
   );
 };
-
-
 
 export default LandingPage;

