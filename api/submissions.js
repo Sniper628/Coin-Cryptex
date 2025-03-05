@@ -6,25 +6,36 @@ const redis = new Redis({
 });
 
 export default async function handler(req, res) {
-  if (req.method === "POST") {
-    const submission = req.body;
-    submission.timestamp = new Date().toISOString();
+  try {
+    if (req.method === "POST") {
+      const submission = req.body;
+      submission.timestamp = new Date().toISOString();
 
-    // Fetch existing submissions from Redis
-    let submissions = (await redis.get("submissions")) || [];
-    submissions.push(submission);
+      // Retrieve stored submissions as a JSON string, then parse it
+      const submissionsStr = await redis.get("submissions");
+      let submissions = submissionsStr ? JSON.parse(submissionsStr) : [];
+      if (!Array.isArray(submissions)) {
+        submissions = [];
+      }
+      submissions.push(submission);
 
-    // Store updated submissions
-    await redis.set("submissions", submissions);
+      // Store the updated submissions as a JSON string
+      await redis.set("submissions", JSON.stringify(submissions));
 
-    return res.status(200).json({ message: "Submission saved" });
+      return res.status(200).json({ message: "Submission saved" });
+    }
+
+    if (req.method === "GET") {
+      // Retrieve stored submissions
+      const submissionsStr = await redis.get("submissions");
+      const submissions = submissionsStr ? JSON.parse(submissionsStr) : [];
+      return res.status(200).json({ submissions });
+    }
+
+    return res.status(405).json({ message: "Method not allowed" });
+  } catch (error) {
+    console.error("API Error:", error);
+    // Return error details for debugging (remove error details in production)
+    return res.status(500).json({ message: "Internal server error", error: error.message });
   }
-
-  if (req.method === "GET") {
-    // Retrieve all submissions from Redis
-    const submissions = (await redis.get("submissions")) || [];
-    return res.status(200).json({ submissions });
-  }
-
-  res.status(405).json({ message: "Method not allowed" });
 }
