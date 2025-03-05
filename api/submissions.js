@@ -6,21 +6,25 @@ export default async function handler(req, res) {
       const submission = req.body;
       submission.timestamp = new Date().toISOString();
 
-      // Retrieve stored submissions. kv.get() should return the value as stored.
-      let submissions = await kv.get("submissions") || [];
-      // Ensure submissions is an array:
-      if (!Array.isArray(submissions)) {
-        submissions = [];
-      }
+      let submissions = (await kv.get("submissions")) || [];
+      if (!Array.isArray(submissions)) submissions = [];
       submissions.push(submission);
 
-      // Store the updated array
       await kv.set("submissions", submissions);
 
       return res.status(200).json({ message: "Submission saved" });
     } else if (req.method === "GET") {
-      const submissions = await kv.get("submissions") || [];
+      const submissions = (await kv.get("submissions")) || [];
       return res.status(200).json({ submissions });
+    } else if (req.method === "DELETE") {
+      // Expecting a JSON body with a 'timestamp' field that uniquely identifies a submission
+      const { timestamp } = req.body;
+      let submissions = (await kv.get("submissions")) || [];
+      submissions = Array.isArray(submissions)
+        ? submissions.filter((sub) => sub.timestamp !== timestamp)
+        : [];
+      await kv.set("submissions", submissions);
+      return res.status(200).json({ message: "Submission deleted" });
     } else {
       return res.status(405).json({ message: "Method not allowed" });
     }

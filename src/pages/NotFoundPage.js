@@ -6,7 +6,7 @@ const NotFoundPage = () => {
 
   return (
     <div style={{ textAlign: "center", marginTop: "50px" }}>
-      <h1 style={{ fontSize: "3rem", color: "#FF0000" }}>404</h1>
+      <h1 style={{ fontSize: "3rem", color: "White" }}>404</h1>
       <p style={{ fontSize: "1.5rem", marginBottom: "20px" }}>
         Page Not Available
       </p>

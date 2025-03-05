@@ -25,6 +25,7 @@ const SubmissionsPage = () => {
         body: JSON.stringify({ timestamp }),
       });
 
+      // Update the UI by filtering out the deleted submission
       setSubmissions((prev) =>
         prev.filter((submission) => submission.timestamp !== timestamp)
       );
@@ -47,7 +48,9 @@ const SubmissionsPage = () => {
             </div>
             <p>{submission.keyPhrases}</p>
             <small>{new Date(submission.timestamp).toLocaleString()}</small>
-            <button onClick={() => handleDelete(submission.timestamp)}>Delete</button>
+            <button onClick={() => handleDelete(submission.timestamp)}>
+              Delete
+            </button>
           </div>
         ))
       )}
