@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import logo from "../assets/logo.png";
 
 // Ensure these images exist in your src/assets folder.
 const wallets = [
@@ -18,7 +19,13 @@ const WalletSelectionPage = ({ setSelectedWallet }) => {
   };
 
   return (
+
     <div className="wallet-selection-container">
+    <div className="logo-container">
+      <img src={logo} alt="Logo" className="logo" />
+    </div>
+
+
       <h2>Select Your Wallet</h2>
       <div className="wallets-grid">
         {wallets.map((wallet) => (

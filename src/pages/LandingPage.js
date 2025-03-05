@@ -14,9 +14,9 @@ const LandingPage = () => {
       <div className="logo-container">
         <img src={logo} alt="Logo" className="logo" />
       </div>
-      <h1>COIN CRYPTEX</h1>
-      <p>The future of crypto in your pocket</p>
-      <p>Trade, send, and store CRYPTO & NFTs</p>
+      {/* <h1>COIN CRYPTEX</h1> */}
+      <p className="the-futer">The future of crypto in your pocket</p>
+      <p className="trade-p">Trade, send, and store CRYPTO & NFTs</p>
       <p>
         By using Coin Cryptex, you agree to the{" "}
         <button
