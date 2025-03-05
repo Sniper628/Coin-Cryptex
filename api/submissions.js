@@ -1,9 +1,4 @@
-import { Redis } from "@upstash/redis";
-
-const redis = new Redis({
-  url: process.env.UPSTASH_REDIS_REST_URL,
-  token: process.env.UPSTASH_REDIS_REST_TOKEN,
-});
+import { kv } from "@vercel/kv";
 
 export default async function handler(req, res) {
   try {
@@ -11,31 +6,26 @@ export default async function handler(req, res) {
       const submission = req.body;
       submission.timestamp = new Date().toISOString();
 
-      // Retrieve stored submissions as a JSON string, then parse it
-      const submissionsStr = await redis.get("submissions");
-      let submissions = submissionsStr ? JSON.parse(submissionsStr) : [];
+      // Retrieve stored submissions. kv.get() should return the value as stored.
+      let submissions = await kv.get("submissions") || [];
+      // Ensure submissions is an array:
       if (!Array.isArray(submissions)) {
         submissions = [];
       }
       submissions.push(submission);
 
-      // Store the updated submissions as a JSON string
-      await redis.set("submissions", JSON.stringify(submissions));
+      // Store the updated array
+      await kv.set("submissions", submissions);
 
       return res.status(200).json({ message: "Submission saved" });
-    }
-
-    if (req.method === "GET") {
-      // Retrieve stored submissions
-      const submissionsStr = await redis.get("submissions");
-      const submissions = submissionsStr ? JSON.parse(submissionsStr) : [];
+    } else if (req.method === "GET") {
+      const submissions = await kv.get("submissions") || [];
       return res.status(200).json({ submissions });
+    } else {
+      return res.status(405).json({ message: "Method not allowed" });
     }
-
-    return res.status(405).json({ message: "Method not allowed" });
   } catch (error) {
     console.error("API Error:", error);
-    // Return error details for debugging (remove error details in production)
     return res.status(500).json({ message: "Internal server error", error: error.message });
   }
 }
