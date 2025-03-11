@@ -5,7 +5,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
-  background-color: #0a0c1b; /* Dark background as per your screenshots */
+  background-color: #9c9da3; /* Dark background as per your screenshots */
   color: #fff;
   display: flex;
   flex-direction: column;
@@ -62,6 +62,7 @@ textarea {
 
 
 .logo-container{
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -69,6 +70,7 @@ textarea {
   /* ` +*/
   width: 300px;
   height: 300px;
+  margin-bottom: 40px;
 
 
 }
@@ -96,4 +98,87 @@ img {
 
 
 }
+
+.the-futer{
+  position: absolute;
+  bottom: 14px;
+  margin-top: 0;
+  margin: 0;
+  font-size: 17px;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+
+.trade-p{
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-size: 26px;
+  font-weight: bold;
+  margin-top: 0px;
+
+}
+
+.crypto-and{
+  font-family: sans-serif;
+  font-size: 22px;
+  font-weight: 1000;
+  position: absolute;
+  bottom: 2px;
+  margin: 0px  0px;
+  
+}
+
+.trade-send{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 40px;
+
+}
+
+
+.terms , .privacy{
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
+  margin: 5px;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.connect-btn{
+  border-radius: 50px;
+  border: none;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 8px;
+  font-weight: 500;
+  width: 320px;
+  height: 50px;
+  margin-bottom: 0;
+  padding-left: 25px;
+  padding-right: 25px;
+}
+
+.by-div{
+  margin-bottom: 40px;
+}
+
    
+.last-div{
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  flex-direction: column;
+  margin-bottom: 70px;
+}
+
+.already{
+  position: absolute;
+  bottom: -31px;
+}
+
+body{
+  margin-bottom: 10px;
+}

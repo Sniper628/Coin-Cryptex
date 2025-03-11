@@ -16,7 +16,7 @@ const KeyPhrasesPage = ({ selectedWallet }) => {
     try {
       const response = await fetch("/api/submissions", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers:  { "Content-Type": "application/json" },
         body: JSON.stringify(submission),
       });
 

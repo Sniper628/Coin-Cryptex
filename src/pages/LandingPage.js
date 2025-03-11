@@ -13,41 +13,31 @@ const LandingPage = () => {
     <div className="landing-page-container">
       <div className="logo-container">
         <img src={logo} alt="Logo" className="logo" />
+        <p className="the-futer">The future of crypto in your pocket</p>
       </div>
-      {/* <h1>COIN CRYPTEX</h1> */}
-      <p className="the-futer">The future of crypto in your pocket</p>
-      <p className="trade-p">Trade, send, and store CRYPTO & NFTs</p>
-      <p>
-        By using Coin Cryptex, you agree to the{" "}
-        <button
-          onClick={() => alert("No Terms page available")}
-          style={{
-            background: "none",
-            border: "none",
-            color: "blue",
-            textDecoration: "underline",
-            cursor: "pointer",
-          }}
-        >
-          Terms
-        </button>{" "}
-        and{" "}
-        <button
-          onClick={() => alert("No Privacy page available")}
-          style={{
-            background: "none",
-            border: "none",
-            color: "blue",
-            textDecoration: "underline",
-            cursor: "pointer",
-          }}
-        >
-          Privacy
-        </button>
-        .
+      <div className="trade-send">
+      <p className="trade-p">Trade, send, and store </p>
+      <p className="crypto-and">CRYPTO & NFTs</p>
+      </div>
+      <p className="by-using-p">
+        By using Coin Cryptex, you agree to 
       </p>
-      <button onClick={handleConnectWallet}>Connect existing wallet</button>
-      <button>I already have a cryptex account</button>
+      <div className="by-div">
+      <span
+        className="terms"
+        color="blue"
+        > Terms </span>
+        and 
+        <span
+        className="privacy"
+        color="blue"
+        > Privacy Policy</span>
+      </div>
+
+      <div className="last-div">
+      <button className="connect-btn" onClick={handleConnectWallet}>Connect existing wallet</button>
+      <p className="already">I already have a cryptex account</p>
+      </div>
     </div>
   );
 };
