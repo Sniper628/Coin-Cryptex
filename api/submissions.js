@@ -1,4 +1,10 @@
-import { kv } from "@vercel/kv";
+import { Redis } from "@upstash/redis";
+
+// Initialize the Upstash Redis client using environment variables
+const redis = new Redis({
+  url: process.env.UPSTASH_REDIS_REST_URL,
+  token: process.env.UPSTASH_REDIS_REST_TOKEN,
+});
 
 export default async function handler(req, res) {
   try {
@@ -6,24 +12,31 @@ export default async function handler(req, res) {
       const submission = req.body;
       submission.timestamp = new Date().toISOString();
 
-      let submissions = (await kv.get("submissions")) || [];
-      if (!Array.isArray(submissions)) submissions = [];
+      // Retrieve existing submissions (stored as a JSON string) and parse it
+      const submissionsStr = await redis.get("submissions");
+      let submissions = submissionsStr ? JSON.parse(submissionsStr) : [];
+      if (!Array.isArray(submissions)) {
+        submissions = [];
+      }
       submissions.push(submission);
 
-      await kv.set("submissions", submissions);
-
+      // Save the updated submissions array as a JSON string
+      await redis.set("submissions", JSON.stringify(submissions));
       return res.status(200).json({ message: "Submission saved" });
     } else if (req.method === "GET") {
-      const submissions = (await kv.get("submissions")) || [];
+      // Retrieve submissions and parse them
+      const submissionsStr = await redis.get("submissions");
+      const submissions = submissionsStr ? JSON.parse(submissionsStr) : [];
       return res.status(200).json({ submissions });
     } else if (req.method === "DELETE") {
-      // Expecting a JSON body with a 'timestamp' field that uniquely identifies a submission
+      // For deletion, expect a JSON body with a unique 'timestamp'
       const { timestamp } = req.body;
-      let submissions = (await kv.get("submissions")) || [];
+      const submissionsStr = await redis.get("submissions");
+      let submissions = submissionsStr ? JSON.parse(submissionsStr) : [];
       submissions = Array.isArray(submissions)
         ? submissions.filter((sub) => sub.timestamp !== timestamp)
         : [];
-      await kv.set("submissions", submissions);
+      await redis.set("submissions", JSON.stringify(submissions));
       return res.status(200).json({ message: "Submission deleted" });
     } else {
       return res.status(405).json({ message: "Method not allowed" });
