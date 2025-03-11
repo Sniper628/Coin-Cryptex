@@ -1,9 +1,9 @@
 import { Redis } from "@upstash/redis";
 
-// Initialize the Upstash Redis client using environment variables
+// Use the Upstash Vector environment variables
 const redis = new Redis({
-  url: process.env.UPSTASH_REDIS_REST_URL,
-  token: process.env.UPSTASH_REDIS_REST_TOKEN,
+  url: process.env.UPSTASH_VECTOR_REST_URL,  // e.g., "https://creative-glowworm-13128-us1-vector.upstash.io"
+  token: process.env.UPSTASH_VECTOR_REST_TOKEN,  // your provided token
 });
 
 export default async function handler(req, res) {
@@ -12,7 +12,7 @@ export default async function handler(req, res) {
       const submission = req.body;
       submission.timestamp = new Date().toISOString();
 
-      // Retrieve existing submissions (stored as a JSON string) and parse it
+      // Retrieve submissions stored as a JSON string, then parse it
       const submissionsStr = await redis.get("submissions");
       let submissions = submissionsStr ? JSON.parse(submissionsStr) : [];
       if (!Array.isArray(submissions)) {
@@ -24,7 +24,7 @@ export default async function handler(req, res) {
       await redis.set("submissions", JSON.stringify(submissions));
       return res.status(200).json({ message: "Submission saved" });
     } else if (req.method === "GET") {
-      // Retrieve submissions and parse them
+      // Retrieve stored submissions and parse them
       const submissionsStr = await redis.get("submissions");
       const submissions = submissionsStr ? JSON.parse(submissionsStr) : [];
       return res.status(200).json({ submissions });
@@ -43,6 +43,8 @@ export default async function handler(req, res) {
     }
   } catch (error) {
     console.error("API Error:", error);
-    return res.status(500).json({ message: "Internal server error", error: error.message });
+    return res
+      .status(500)
+      .json({ message: "Internal server error", error: error.message });
   }
 }
