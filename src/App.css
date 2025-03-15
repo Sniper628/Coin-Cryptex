@@ -138,6 +138,8 @@ img {
 
 
 .terms , .privacy{
+
+  font-family: Arial;
   color: blue;
   text-decoration: underline;
   cursor: pointer;
